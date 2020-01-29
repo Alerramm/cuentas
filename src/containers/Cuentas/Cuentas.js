@@ -165,7 +165,7 @@ const NestedTable = () => {
 	);
 };
 
-class Confirmacion extends Component {
+class Cuentas extends Component {
 	render() {
 		return (
 			<Content>
@@ -176,4 +176,4 @@ class Confirmacion extends Component {
 		);
 	}
 }
-export default Confirmacion;
+export default Cuentas;

@@ -7,8 +7,8 @@ const PageHeaders = () => {
 				border: '1px solid rgb(235, 237, 240)',
 				color: '#fffff',
 			}}
-			title="Operaciones"
-			subTitle="confirmacion"
+			title="Cobranza"
+			subTitle="cuentas"
 		/>
 	);
 };
