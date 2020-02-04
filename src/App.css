@@ -1,20 +1,28 @@
-.App {
-  text-align: center;
+#components-layout-demo-custom-trigger .trigger {
+	font-size: 18px;
+	line-height: 64px;
+	padding: 0 24px;
+	cursor: pointer;
+	transition: color 0.3s;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+#components-layout-demo-custom-trigger .trigger:hover {
+	color: #1890ff;
 }
 
-@media (prefers-reduced-motion: no-preference) {
+#components-layout-demo-custom-trigger .logo {
+	height: 50px;
+	background: rgba(255, 255, 255, 0.2);
+	margin: 50px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.collapse {
+	font-size: 18px;
+	line-height: 64px;
+	padding: 0 24px;
+}
+
+.textHeader {
+	color: #ffffff;
+	font-size: 1.5rem;
 }

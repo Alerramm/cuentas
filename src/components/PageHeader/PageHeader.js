@@ -1,15 +1,11 @@
 import React from 'react';
-import { PageHeader } from 'antd';
+import { Layout } from 'antd';
 const PageHeaders = () => {
+	const { Header } = Layout;
 	return (
-		<PageHeader
-			style={{
-				border: '1px solid rgb(235, 237, 240)',
-				color: '#fffff',
-			}}
-			title="Cobranza"
-			subTitle="cuentas"
-		/>
+		<Header className="header">
+			<div className="textHeader">COBRANZA</div>
+		</Header>
 	);
 };
 export default PageHeaders;
