@@ -4,7 +4,7 @@ const PageHeaders = () => {
 	const { Header } = Layout;
 	return (
 		<Header className="header">
-			<div className="textHeader">COBRANZA</div>
+			<div className="textHeader">CUENTAS POR COBRAR</div>
 		</Header>
 	);
 };

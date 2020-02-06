@@ -9,8 +9,8 @@ import 'antd/dist/antd.css';
 const { Sider, Content } = Layout;
 class App extends Component {
 	state = {
-		collapsed: false,
-		opcion: 'analitycs',
+		collapsed: true,
+		opcion: 'tabla',
 	};
 
 	toggle = () => {
@@ -38,14 +38,15 @@ class App extends Component {
 							/>
 						</div>
 
-						<Menu.Item key="1" name="analitycs" onClick={this.option}>
-							<Icon type="bar-chart" />
-							<span>Analitycs</span>
-						</Menu.Item>
-						<Menu.Item key="2" name="tabla" onClick={this.option}>
+						<Menu.Item key="1" name="tabla" onClick={this.option}>
 							<Icon type="table" />
 							<span>Control</span>
 						</Menu.Item>
+						<Menu.Item key="2" name="analitycs" onClick={this.option}>
+							<Icon type="bar-chart" />
+							<span>Analitycs</span>
+						</Menu.Item>
+
 						<Menu.Item key="3" name="upload" onClick={this.option}>
 							<Icon type="upload" />
 							<span>Agregar Facturas</span>
