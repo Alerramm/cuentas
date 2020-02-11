@@ -1,4 +1,4 @@
-export const consultaClientesApi = async queryView => {
+export const cuentasApi = async queryView => {
 	const method = queryView.method;
 	const instance = await fetch(queryView.endpoint, {
 		method,

@@ -1,9 +1,17 @@
-import { consultaClientesApi } from './CuentasApi';
-import { CONSULTAR_CLIENTES } from './../../constants/Endpoints';
+import { cuentasApi } from './CuentasApi';
+import { CONSULTAR_CLIENTES, CONSULTAR_FACTURAS } from './../../constants/Endpoints';
 export const consultaClientes = async () => {
 	const queryView = {
 		endpoint: CONSULTAR_CLIENTES,
 		method: 'GET',
 	};
-	return consultaClientesApi(queryView);
+	return cuentasApi(queryView);
+};
+
+export const consultaFacturas = async () => {
+	const queryView = {
+		endpoint: CONSULTAR_FACTURAS,
+		method: 'GET',
+	};
+	return cuentasApi(queryView);
 };

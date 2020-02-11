@@ -1,6 +1,6 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { Layout, Table } from 'antd';
-import { consultaClientes } from './CuentasActions';
+import { consultaClientes, consultaFacturas } from './CuentasActions';
 const { Content } = Layout;
 class Cuentas extends Component {
 	state = {
@@ -8,7 +8,17 @@ class Cuentas extends Component {
 		columns: [],
 		loading: false,
 	};
-
+	expandedRowRender = record => {
+		const { data } = this.state;
+		const columns = [
+			{ title: 'Factura', dataIndex: 'factura', key: 'factura' },
+			{ title: 'Viaje', dataIndex: 'viaje', key: 'viaje' },
+			{ title: 'Monto', dataIndex: 'monto', key: 'monto' },
+			{ title: 'Fecha', dataIndex: 'fecha', key: 'fecha' },
+		];
+		const facturas = data.filter(element => element.cliente === record.cliente);
+		return <Table columns={columns} dataSource={facturas[0].facturas} pagination={false} />;
+	};
 	componentDidMount = () => {
 		const { data } = this.state;
 		this.setState({
@@ -38,20 +48,47 @@ class Cuentas extends Component {
 			const clientes = response.payload;
 			clientes.map((item, index) => {
 				data.push({
-					key: index,
+					key: 'C' + index,
 					cliente: item,
-					numeroDeFacturasPorPagar: '',
-					montoTotalPorPagar: '',
+					numeroDeFacturasPorPagar: 0,
+					montoTotalPorPagar: 0,
 					semana1: '',
 					semana2: '',
+					facturas: [],
 				});
+				return item;
+			});
+
+			this.setState({
+				data,
+			});
+		});
+		consultaFacturas().then(response => {
+			const Facturas = response.payload;
+			Facturas.map((item, index) => {
+				data.map(element => {
+					if (element.cliente === item.cliente) {
+						element.numeroDeFacturasPorPagar = element.numeroDeFacturasPorPagar + 1;
+						element.montoTotalPorPagar =
+							element.montoTotalPorPagar + parseInt(item.monto, 10);
+						element.facturas.push({
+							key: 'F' + index,
+							cliente: item.cliente,
+							viaje: item.viaje,
+							monto: item.monto,
+							factura: item.factura,
+							fecha: item.fecFacturacion,
+						});
+					}
+					return element;
+				});
+				return item;
 			});
 			this.setState({
 				data,
 			});
 		});
 		this.setState({
-			data,
 			columns,
 			loading: false,
 		});
@@ -67,6 +104,7 @@ class Cuentas extends Component {
 						columns={columns}
 						dataSource={data}
 						loading={loading}
+						expandedRowRender={this.expandedRowRender}
 						bordered
 						pagination={{ position: 'top' }}
 					/>
