@@ -3,7 +3,6 @@ import { Layout, Menu, Icon } from 'antd';
 import PageHeaders from './components/PageHeader/PageHeader';
 import Cuentas from './containers/Cuentas/Cuentas';
 import Analitycs from './containers/Analitycs/Analitycs';
-import moment from 'moment';
 
 import './App.css';
 import 'antd/dist/antd.css';
