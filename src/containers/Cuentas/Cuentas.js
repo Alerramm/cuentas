@@ -89,7 +89,7 @@ class Cuentas extends Component {
 			{ title: 'Factura', dataIndex: 'factura', key: 'factura' },
 			{ title: 'Viaje', dataIndex: 'viaje', key: 'viaje' },
 			{ title: 'Monto Factura', dataIndex: 'monto', key: 'monto' },
-			{ title: 'Monto Pagado', dataIndex: 'montoPagado', key: 'montoPagado' },
+			{ title: 'Monto por Pagar', dataIndex: 'montoPorPagar', key: 'montoPorPagar' },
 			{ title: 'Fecha', dataIndex: 'fecha', key: 'fecha' },
 			{ title: 'Fecha Vencimiemto', dataIndex: 'fechaVencimiento', key: 'fechaVencimiento' },
 			{ title: 'Estatus', dataIndex: 'estatus', key: 'estatus' },
@@ -147,7 +147,7 @@ class Cuentas extends Component {
 					element.montoTotalDeFacturas =
 						element.montoTotalDeFacturas + parseInt(item.monto, 10);
 					element.montoTotalPorPagar =
-						element.montoTotalDeFacturas -
+						parseInt(item.monto, 10) -
 						(element.montoTotalPorPagar + parseInt(item.montoPagado, 10));
 					element.numeroDeFacturasPorPagar = element.numeroDeFacturasPorPagar + 1;
 
@@ -156,7 +156,7 @@ class Cuentas extends Component {
 						cliente: item.cliente,
 						viaje: item.viaje,
 						monto: item.monto,
-						montoPagado: item.montoPagado,
+						montoPorPagar: item.monto - item.montoPagado,
 						factura: item.factura,
 						fecha:
 							item.fecFacturacion.substring(8, 10) +
