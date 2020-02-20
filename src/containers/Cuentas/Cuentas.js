@@ -75,11 +75,23 @@ class Cuentas extends Component {
 			tipo: '',
 		});
 	};
-	menu = (id, monto) => {
+	menu = (id, monto, montoPagado) => {
+		let estado = false,
+			parcial = false;
+		if (montoPagado === monto) {
+			estado = true;
+		}
+		if (montoPagado !== 0) {
+			parcial = true;
+		}
 		return (
 			<Menu onClick={this.handleMenuClick}>
-				<Menu.Item key={`par-${id}-${monto}`}>Parcial</Menu.Item>
-				<Menu.Item key={`pag-${id}-${monto}`}>Pagada</Menu.Item>
+				<Menu.Item disabled={estado || parcial} key={`par-${id}-${monto}`}>
+					Parcial
+				</Menu.Item>
+				<Menu.Item disabled={estado} key={`pag-${id}-${monto}`}>
+					Pagada
+				</Menu.Item>
 			</Menu>
 		);
 	};
@@ -109,7 +121,7 @@ class Cuentas extends Component {
 			badge = 'error';
 		}
 		return (
-			<Dropdown overlay={this.menu(id, monto)}>
+			<Dropdown overlay={this.menu(id, monto, montoPagar)}>
 				<div>
 					{frase} <Badge status={badge} />
 				</div>
