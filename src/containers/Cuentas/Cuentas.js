@@ -232,6 +232,7 @@ class Cuentas extends Component {
 
 		consultaClientes().then(response => {
 			const clientes = response.payload;
+			const semana = Date(Date.now());
 			clientes.map((item, index) => {
 				data.push({
 					key: 'C' + index,
@@ -239,8 +240,8 @@ class Cuentas extends Component {
 					numeroDeFacturasPorPagar: 0,
 					montoTotalDeFacturas: 0,
 					montoTotalPorPagar: 0,
-					semana1: '',
-					semana2: '',
+					semana1: semana.toString(),
+					semana2: semana.toString(),
 					diasCredito: item.diasCredito,
 					facturas: [],
 				});
