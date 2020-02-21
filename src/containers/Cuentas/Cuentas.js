@@ -128,6 +128,7 @@ class Cuentas extends Component {
 			</Dropdown>
 		);
 	};
+	monthNames = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
 	llenarFacturas = response => {
 		console.log(response);
 		const { data } = this.state;
@@ -135,20 +136,6 @@ class Cuentas extends Component {
 		Facturas.map((item, index) => {
 			data.map(element => {
 				if (element.cliente === item.cliente) {
-					var monthNames = [
-						'01',
-						'02',
-						'03',
-						'04',
-						'05',
-						'06',
-						'07',
-						'08',
-						'09',
-						'10',
-						'11',
-						'12',
-					];
 					const fecha = new Date();
 					fecha.setFullYear(
 						item.fecFacturacion.substring(0, 4),
@@ -180,7 +167,7 @@ class Cuentas extends Component {
 						fechaVencimiento:
 							fecha.getDate() +
 							'-' +
-							monthNames[fecha.getMonth()] +
+							this.monthNames[fecha.getMonth()] +
 							'-' +
 							fecha.getFullYear(),
 						estatus: this.estatus(
@@ -216,12 +203,12 @@ class Cuentas extends Component {
 			},
 
 			{
-				title: 'MONTO TOTAL DE FACTURAS',
+				title: 'TOTAL DE FACTURAS',
 				dataIndex: 'montoTotalDeFacturas',
 				key: 'montoTotalDeFacturas',
 			},
 			{
-				title: 'MONTO TOTAL POR PAGAR',
+				title: 'TOTAL POR PAGAR',
 				dataIndex: 'montoTotalPorPagar',
 				key: 'montoTotalPorPagar',
 			},
@@ -232,7 +219,39 @@ class Cuentas extends Component {
 
 		consultaClientes().then(response => {
 			const clientes = response.payload;
-			const semana = Date(Date.now());
+			const semana1 = new Date(Date.now());
+			const semana2 = new Date(Date.now());
+			const day = semana1.getDay();
+			let suma;
+			switch (day) {
+				case 0:
+					suma = 5;
+					break;
+				case 1:
+					suma = 4;
+					break;
+				case 2:
+					suma = 3;
+					break;
+				case 3:
+					suma = 2;
+					break;
+				case 4:
+					suma = 1;
+					break;
+				case 5:
+					suma = 0;
+					semana1.setDate(semana1.getDate() + 7);
+					break;
+				case 6:
+					suma = -1;
+					semana1.setDate(semana1.getDate() + 7);
+					break;
+				default:
+					suma = 0;
+			}
+			semana1.setDate(semana1.getDate() + suma);
+			semana2.setDate(semana1.getDate() + 6);
 			clientes.map((item, index) => {
 				data.push({
 					key: 'C' + index,
@@ -240,8 +259,18 @@ class Cuentas extends Component {
 					numeroDeFacturasPorPagar: 0,
 					montoTotalDeFacturas: 0,
 					montoTotalPorPagar: 0,
-					semana1: semana.toString(),
-					semana2: semana.toString(),
+					semana1:
+						semana1.getDate() +
+						'-' +
+						this.monthNames[semana1.getMonth()] +
+						'-' +
+						semana1.getFullYear(),
+					semana2:
+						semana2.getDate() +
+						'-' +
+						this.monthNames[semana2.getMonth()] +
+						'-' +
+						semana2.getFullYear(),
 					diasCredito: item.diasCredito,
 					facturas: [],
 				});
