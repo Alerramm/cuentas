@@ -147,8 +147,9 @@ class Cuentas extends Component {
 						element.montoTotalDeFacturas + parseInt(item.monto, 10);
 					element.montoTotalPorPagar =
 						element.montoTotalPorPagar +
-						parseInt(item.montoPagado, 10) -
-						parseInt(item.monto, 10);
+						parseInt(item.monto, 10) -
+						parseInt(item.montoPagado, 10);
+
 					element.numeroDeFacturasPorPagar = element.numeroDeFacturasPorPagar + 1;
 
 					element.facturas.push({
