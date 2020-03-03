@@ -213,6 +213,46 @@ class Cuentas extends Component {
 		this.setState({
 			loading: true,
 		});
+		const semana1 = new Date(Date.now());
+		const day = semana1.getDay();
+		let suma;
+		switch (day) {
+			case 0:
+				suma = 5;
+				semana1.setDate(semana1.getDate() - 7);
+				break;
+			case 1:
+				suma = 4;
+				semana1.setDate(semana1.getDate() - 7);
+				break;
+			case 2:
+				suma = 3;
+				semana1.setDate(semana1.getDate() - 7);
+				break;
+			case 3:
+				suma = 2;
+				semana1.setDate(semana1.getDate() - 7);
+				break;
+			case 4:
+				suma = 1;
+				semana1.setDate(semana1.getDate() - 7);
+				break;
+			case 5:
+				suma = 0;
+				break;
+			case 6:
+				suma = -1;
+				break;
+			default:
+				suma = 0;
+		}
+		semana1.setDate(semana1.getDate() + suma);
+		const semana2 = new Date(semana1);
+		semana2.setDate(semana2.getDate() + 6);
+		const semana3 = new Date(semana2);
+		semana3.setDate(semana3.getDate() + 1);
+		const semana4 = new Date(semana3);
+		semana4.setDate(semana4.getDate() + 6);
 		let columns = [
 			{
 				title: 'CLIENTE',
@@ -249,46 +289,46 @@ class Cuentas extends Component {
 					/>
 				),
 			},
-			{ title: 'SEMANA 1', dataIndex: 'semana1', key: 'semana1' },
-			{ title: 'SEMANA 2', dataIndex: 'semana2', key: 'semana2' },
+			{
+				title:
+					'SEMANA ' +
+					semana1.getDate() +
+					'-' +
+					this.monthNames[semana1.getMonth()] +
+					'-' +
+					semana1.getFullYear() +
+					' / ' +
+					semana2.getDate() +
+					'-' +
+					this.monthNames[semana2.getMonth()] +
+					'-' +
+					semana2.getFullYear(),
+				dataIndex: 'semana1',
+				key: 'semana1',
+			},
+			{
+				title:
+					'SEMANA ' +
+					semana3.getDate() +
+					'-' +
+					this.monthNames[semana3.getMonth()] +
+					'-' +
+					semana3.getFullYear() +
+					' / ' +
+					semana4.getDate() +
+					'-' +
+					this.monthNames[semana4.getMonth()] +
+					'-' +
+					semana4.getFullYear(),
+				dataIndex: 'semana2',
+				key: 'semana2',
+			},
 			{ title: 'DIAS DE CREDITO', dataIndex: 'diasCredito', key: 'diasCredito' },
 		];
 
 		consultaClientes().then(response => {
 			const clientes = response.payload;
-			const semana1 = new Date(Date.now());
-			const semana2 = new Date(Date.now());
-			const day = semana1.getDay();
-			let suma;
-			switch (day) {
-				case 0:
-					suma = 5;
-					break;
-				case 1:
-					suma = 4;
-					break;
-				case 2:
-					suma = 3;
-					break;
-				case 3:
-					suma = 2;
-					break;
-				case 4:
-					suma = 1;
-					break;
-				case 5:
-					suma = 0;
-					semana1.setDate(semana1.getDate() + 7);
-					break;
-				case 6:
-					suma = -1;
-					semana1.setDate(semana1.getDate() + 7);
-					break;
-				default:
-					suma = 0;
-			}
-			semana1.setDate(semana1.getDate() + suma);
-			semana2.setDate(semana1.getDate() + 6);
+
 			clientes.map((item, index) => {
 				data.push({
 					key: 'C' + index,
@@ -296,18 +336,8 @@ class Cuentas extends Component {
 					numeroDeFacturasPorPagar: 0,
 					montoTotalDeFacturas: 0,
 					montoTotalPorPagar: 0,
-					semana1:
-						semana1.getDate() +
-						'-' +
-						this.monthNames[semana1.getMonth()] +
-						'-' +
-						semana1.getFullYear(),
-					semana2:
-						semana2.getDate() +
-						'-' +
-						this.monthNames[semana2.getMonth()] +
-						'-' +
-						semana2.getFullYear(),
+					semana1: '',
+					semana2: '',
 					diasCredito: item.diasCredito,
 					facturas: [],
 				});
