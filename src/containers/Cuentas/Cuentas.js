@@ -113,7 +113,7 @@ class Cuentas extends Component {
 				),
 			},
 			{
-				title: 'Monto por Pagar',
+				title: 'Monto por Cobrar',
 				dataIndex: 'montoPorPagar',
 				key: 'montoPorPagar',
 				render: text => (
@@ -260,7 +260,7 @@ class Cuentas extends Component {
 				key: 'cliente',
 			},
 			{
-				title: '# DE FACTURAS POR PAGAR',
+				title: '# DE FACTURAS',
 				dataIndex: 'numeroDeFacturasPorPagar',
 				key: 'numeroDeFacturasPorPagar',
 			},
@@ -278,7 +278,7 @@ class Cuentas extends Component {
 				),
 			},
 			{
-				title: 'TOTAL POR PAGAR',
+				title: 'TOTAL POR COBRAR',
 				dataIndex: 'montoTotalPorPagar',
 				key: 'montoTotalPorPagar',
 				render: text => (
