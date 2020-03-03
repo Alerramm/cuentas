@@ -100,8 +100,30 @@ class Cuentas extends Component {
 		const columns = [
 			{ title: 'Factura', dataIndex: 'factura', key: 'factura' },
 			{ title: 'Viaje', dataIndex: 'viaje', key: 'viaje' },
-			{ title: 'Monto Factura', dataIndex: 'monto', key: 'monto' },
-			{ title: 'Monto por Pagar', dataIndex: 'montoPorPagar', key: 'montoPorPagar' },
+			{
+				title: 'Monto Factura',
+				dataIndex: 'monto',
+				key: 'monto',
+				render: text => (
+					<InputNumber
+						value={text}
+						disabled
+						formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+					/>
+				),
+			},
+			{
+				title: 'Monto por Pagar',
+				dataIndex: 'montoPorPagar',
+				key: 'montoPorPagar',
+				render: text => (
+					<InputNumber
+						value={text}
+						disabled
+						formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+					/>
+				),
+			},
 			{ title: 'Fecha', dataIndex: 'fecha', key: 'fecha' },
 			{ title: 'Fecha Vencimiemto', dataIndex: 'fechaVencimiento', key: 'fechaVencimiento' },
 			{ title: 'Estatus', dataIndex: 'estatus', key: 'estatus' },
@@ -207,11 +229,25 @@ class Cuentas extends Component {
 				title: 'TOTAL DE FACTURAS',
 				dataIndex: 'montoTotalDeFacturas',
 				key: 'montoTotalDeFacturas',
+				render: text => (
+					<InputNumber
+						value={text}
+						disabled
+						formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+					/>
+				),
 			},
 			{
 				title: 'TOTAL POR PAGAR',
 				dataIndex: 'montoTotalPorPagar',
 				key: 'montoTotalPorPagar',
+				render: text => (
+					<InputNumber
+						value={text}
+						disabled
+						formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+					/>
+				),
 			},
 			{ title: 'SEMANA 1', dataIndex: 'semana1', key: 'semana1' },
 			{ title: 'SEMANA 2', dataIndex: 'semana2', key: 'semana2' },
