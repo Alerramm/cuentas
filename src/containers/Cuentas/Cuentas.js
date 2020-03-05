@@ -180,19 +180,6 @@ class Cuentas extends Component {
 				0
 			)
 		);
-		/* const antes1 = new Date(Date.UTC(2020, 1, 25, 6, 0, 0));
-		const inicio1 = new Date(Date.UTC(2020, 1, 28, 6, 0, 0));
-		const medio1 = new Date(Date.UTC(2020, 2, 1, 6, 0, 0));
-
-		const fin1 = new Date(Date.UTC(2020, 2, 5, 6, 0, 0));
-		const despues1 = new Date(Date.UTC(2020, 2, 8, 6, 0, 0));
-		console.log(semana1);
-		console.log(semana2);
-		console.log(antes1 + 'antes - ' + this.comparar(antes1, semana1, semana2));
-		console.log(inicio1 + 'inicio - ' + this.comparar(inicio1, semana1, semana2));
-		console.log(medio1 + 'medio - ' + this.comparar(medio1, semana1, semana2));
-		console.log(fin1 + 'fin - ' + this.comparar(fin1, semana1, semana2));
-		console.log(despues1 + 'despues - ' + this.comparar(despues1, semana1, semana2)); */
 
 		const { data } = this.state;
 		const Facturas = response.payload;
@@ -216,10 +203,13 @@ class Cuentas extends Component {
 					element.numeroDeFacturasPorPagar = element.numeroDeFacturasPorPagar + 1;
 
 					console.log(fecha);
-					if (this.comparar(fecha, semana1, semana2)) {
+					const fechaComparar = new Date(
+						Date.UTC(fecha.getFullYear(), fecha.getMonth(), fecha.getDate(), 6, 0, 0)
+					);
+					if (this.comparar(fechaComparar, semana1, semana2)) {
 						element.semana1 = Math.round((element.semana1 + item.monto) * 100) / 100;
 					}
-					if (this.comparar(fecha, semana3, semana4)) {
+					if (this.comparar(fechaComparar, semana3, semana4)) {
 						element.semana2 = Math.round((element.semana2 + item.monto) * 100) / 100;
 					}
 
