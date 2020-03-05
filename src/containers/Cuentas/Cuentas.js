@@ -108,7 +108,8 @@ class Cuentas extends Component {
 					<InputNumber
 						value={text}
 						disabled
-						formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+						style={{ width: '100%' }}
+						/* formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} */
 					/>
 				),
 			},
@@ -120,7 +121,8 @@ class Cuentas extends Component {
 					<InputNumber
 						value={text}
 						disabled
-						formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+						style={{ width: '100%' }}
+						/* formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} */
 					/>
 				),
 			},
@@ -151,8 +153,47 @@ class Cuentas extends Component {
 		);
 	};
 	monthNames = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
-	llenarFacturas = response => {
-		console.log(response);
+	comparar = (fecha, semana1, semana2) => {
+		if (fecha >= semana1 && fecha <= semana2) {
+			return true;
+		}
+		return false;
+	};
+
+	llenarFacturas = (response, semanaUno, semanaDos, semanaTres, semanaCuatro) => {
+		const semana1 = new Date(
+			Date.UTC(semanaUno.getFullYear(), semanaUno.getMonth(), semanaUno.getDate(), 6, 0, 0)
+		);
+		const semana2 = new Date(
+			Date.UTC(semanaDos.getFullYear(), semanaDos.getMonth(), semanaDos.getDate(), 6, 0, 0)
+		);
+		const semana3 = new Date(
+			Date.UTC(semanaTres.getFullYear(), semanaTres.getMonth(), semanaTres.getDate(), 6, 0, 0)
+		);
+		const semana4 = new Date(
+			Date.UTC(
+				semanaCuatro.getFullYear(),
+				semanaCuatro.getMonth(),
+				semanaCuatro.getDate(),
+				6,
+				0,
+				0
+			)
+		);
+		/* const antes1 = new Date(Date.UTC(2020, 1, 25, 6, 0, 0));
+		const inicio1 = new Date(Date.UTC(2020, 1, 28, 6, 0, 0));
+		const medio1 = new Date(Date.UTC(2020, 2, 1, 6, 0, 0));
+
+		const fin1 = new Date(Date.UTC(2020, 2, 5, 6, 0, 0));
+		const despues1 = new Date(Date.UTC(2020, 2, 8, 6, 0, 0));
+		console.log(semana1);
+		console.log(semana2);
+		console.log(antes1 + 'antes - ' + this.comparar(antes1, semana1, semana2));
+		console.log(inicio1 + 'inicio - ' + this.comparar(inicio1, semana1, semana2));
+		console.log(medio1 + 'medio - ' + this.comparar(medio1, semana1, semana2));
+		console.log(fin1 + 'fin - ' + this.comparar(fin1, semana1, semana2));
+		console.log(despues1 + 'despues - ' + this.comparar(despues1, semana1, semana2)); */
+
 		const { data } = this.state;
 		const Facturas = response.payload;
 		Facturas.map((item, index) => {
@@ -166,13 +207,21 @@ class Cuentas extends Component {
 							parseInt(element.diasCredito, 10)
 					);
 					element.montoTotalDeFacturas =
-						element.montoTotalDeFacturas + parseInt(item.monto, 10);
+						Math.round((element.montoTotalDeFacturas + item.monto) * 100) / 100;
 					element.montoTotalPorPagar =
-						element.montoTotalPorPagar +
-						parseInt(item.monto, 10) -
-						parseInt(item.montoPagado, 10);
+						Math.round(
+							(element.montoTotalPorPagar + item.monto - item.montoPagado) * 100
+						) / 100;
 
 					element.numeroDeFacturasPorPagar = element.numeroDeFacturasPorPagar + 1;
+
+					console.log(fecha);
+					if (this.comparar(fecha, semana1, semana2)) {
+						element.semana1 = Math.round((element.semana1 + item.monto) * 100) / 100;
+					}
+					if (this.comparar(fecha, semana3, semana4)) {
+						element.semana2 = Math.round((element.semana2 + item.monto) * 100) / 100;
+					}
 
 					element.facturas.push({
 						key: 'F' + index,
@@ -272,8 +321,9 @@ class Cuentas extends Component {
 				render: text => (
 					<InputNumber
 						value={text}
+						style={{ width: '100%' }}
 						disabled
-						formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+						/* formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} */
 					/>
 				),
 			},
@@ -284,8 +334,9 @@ class Cuentas extends Component {
 				render: text => (
 					<InputNumber
 						value={text}
+						style={{ width: '100%' }}
 						disabled
-						formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+						/* formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} */
 					/>
 				),
 			},
@@ -305,6 +356,14 @@ class Cuentas extends Component {
 					semana2.getFullYear(),
 				dataIndex: 'semana1',
 				key: 'semana1',
+				render: text => (
+					<InputNumber
+						value={text}
+						disabled
+						style={{ width: '100%' }}
+						/* formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} */
+					/>
+				),
 			},
 			{
 				title:
@@ -322,6 +381,14 @@ class Cuentas extends Component {
 					semana4.getFullYear(),
 				dataIndex: 'semana2',
 				key: 'semana2',
+				render: text => (
+					<InputNumber
+						value={text}
+						style={{ width: '100%' }}
+						disabled
+						/* formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} */
+					/>
+				),
 			},
 			{ title: 'DIAS DE CREDITO', dataIndex: 'diasCredito', key: 'diasCredito' },
 		];
@@ -336,8 +403,8 @@ class Cuentas extends Component {
 					numeroDeFacturasPorPagar: 0,
 					montoTotalDeFacturas: 0,
 					montoTotalPorPagar: 0,
-					semana1: '',
-					semana2: '',
+					semana1: 0,
+					semana2: 0,
 					diasCredito: item.diasCredito,
 					facturas: [],
 				});
@@ -349,7 +416,7 @@ class Cuentas extends Component {
 			});
 		});
 		consultaFacturas().then(response => {
-			this.llenarFacturas(response);
+			this.llenarFacturas(response, semana1, semana2, semana3, semana4);
 		});
 		this.setState({
 			columns,
