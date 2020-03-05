@@ -109,7 +109,7 @@ class Cuentas extends Component {
 						value={text}
 						disabled
 						style={{ width: '100%' }}
-						/* formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} */
+						formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
 					/>
 				),
 			},
@@ -122,7 +122,7 @@ class Cuentas extends Component {
 						value={text}
 						disabled
 						style={{ width: '100%' }}
-						/* formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} */
+						formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
 					/>
 				),
 			},
@@ -323,7 +323,7 @@ class Cuentas extends Component {
 						value={text}
 						style={{ width: '100%' }}
 						disabled
-						/* formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} */
+						formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
 					/>
 				),
 			},
@@ -336,7 +336,7 @@ class Cuentas extends Component {
 						value={text}
 						style={{ width: '100%' }}
 						disabled
-						/* formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} */
+						formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
 					/>
 				),
 			},
@@ -361,7 +361,7 @@ class Cuentas extends Component {
 						value={text}
 						disabled
 						style={{ width: '100%' }}
-						/* formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} */
+						formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
 					/>
 				),
 			},
@@ -386,7 +386,7 @@ class Cuentas extends Component {
 						value={text}
 						style={{ width: '100%' }}
 						disabled
-						/* formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} */
+						formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
 					/>
 				),
 			},
