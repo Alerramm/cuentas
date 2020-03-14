@@ -308,7 +308,6 @@ class Cuentas extends Component {
 						summary={pageData => {
 							let totalBorrow = 0;
 							let totalRepayment = 0;
-							console.log(pageData);
 							pageData.forEach(({ total }) => {
 								totalBorrow += total;
 								++totalRepayment;

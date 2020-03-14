@@ -19,7 +19,6 @@ class App extends Component {
 		});
 	};
 	option = e => {
-		console.log(e.item.props.name);
 		this.setState({
 			opcion: e.item.props.name,
 		});

@@ -37,75 +37,10 @@ class Cuentas extends Component {
 		}
 	};
 	changeStatus = () => {
-		this.setState({
-			data: [],
-		});
 		const { id, monto, tipo } = this.state;
 
-		consultaClientes().then(response => {
-			const { data } = this.state;
-			const clientes = response.payload;
-			clientes.map((item, index) => {
-				data.push({
-					key: 'C' + index,
-					cliente: item.nombre,
-					numeroDeFacturasPorPagar: 0,
-					montoTotalDeFacturas: 0,
-					montoTotalPorPagar: 0,
-					semana1: '',
-					semana2: '',
-					diasCredito: item.diasCredito,
-					facturas: [],
-				});
-				return item;
-			});
-
-			this.setState({
-				data,
-			});
-		});
 		actualizaEstatus({ id, monto, tipoPago: tipo }).then(response => {
-			const semana1 = new Date(Date.now());
-			const day = semana1.getDay();
-			let suma;
-			switch (day) {
-				case 0:
-					suma = 5;
-					semana1.setDate(semana1.getDate() - 7);
-					break;
-				case 1:
-					suma = 4;
-					semana1.setDate(semana1.getDate() - 7);
-					break;
-				case 2:
-					suma = 3;
-					semana1.setDate(semana1.getDate() - 7);
-					break;
-				case 3:
-					suma = 2;
-					semana1.setDate(semana1.getDate() - 7);
-					break;
-				case 4:
-					suma = 1;
-					semana1.setDate(semana1.getDate() - 7);
-					break;
-				case 5:
-					suma = 0;
-					break;
-				case 6:
-					suma = -1;
-					break;
-				default:
-					suma = 0;
-			}
-			semana1.setDate(semana1.getDate() + suma);
-			const semana2 = new Date(semana1);
-			semana2.setDate(semana2.getDate() + 6);
-			const semana3 = new Date(semana2);
-			semana3.setDate(semana3.getDate() + 1);
-			const semana4 = new Date(semana3);
-			semana4.setDate(semana4.getDate() + 6);
-			this.llenarFacturas(response.payload, semana1, semana2, semana3, semana4);
+			this.actulizarFActura(response.payload);
 		});
 
 		this.setState({
@@ -199,7 +134,9 @@ class Cuentas extends Component {
 		}
 		return false;
 	};
-
+	actulizarFActura = response => {
+		console.log(response);
+	};
 	llenarFacturas = (response, semanaUno, semanaDos, semanaTres, semanaCuatro) => {
 		const semana1 = new Date(
 			Date.UTC(semanaUno.getFullYear(), semanaUno.getMonth(), semanaUno.getDate(), 6, 0, 0)
@@ -242,7 +179,6 @@ class Cuentas extends Component {
 
 					element.numeroDeFacturasPorPagar = element.numeroDeFacturasPorPagar + 1;
 
-					console.log(fecha);
 					const fechaComparar = new Date(
 						Date.UTC(fecha.getFullYear(), fecha.getMonth(), fecha.getDate(), 6, 0, 0)
 					);
