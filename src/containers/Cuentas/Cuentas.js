@@ -40,7 +40,47 @@ class Cuentas extends Component {
 		const { id, monto, tipo } = this.state;
 
 		actualizaEstatus({ id, monto, tipoPago: tipo }).then(response => {
-			this.actulizarFActura(response.payload);
+			const semana1 = new Date(Date.now());
+			const day = semana1.getDay();
+			let suma;
+			switch (day) {
+				case 0:
+					suma = 5;
+					semana1.setDate(semana1.getDate() - 7);
+					break;
+				case 1:
+					suma = 4;
+					semana1.setDate(semana1.getDate() - 7);
+					break;
+				case 2:
+					suma = 3;
+					semana1.setDate(semana1.getDate() - 7);
+					break;
+				case 3:
+					suma = 2;
+					semana1.setDate(semana1.getDate() - 7);
+					break;
+				case 4:
+					suma = 1;
+					semana1.setDate(semana1.getDate() - 7);
+					break;
+				case 5:
+					suma = 0;
+					break;
+				case 6:
+					suma = -1;
+					break;
+				default:
+					suma = 0;
+			}
+			semana1.setDate(semana1.getDate() + suma);
+			const semana2 = new Date(semana1);
+			semana2.setDate(semana2.getDate() + 6);
+			const semana3 = new Date(semana2);
+			semana3.setDate(semana3.getDate() + 1);
+			const semana4 = new Date(semana3);
+			semana4.setDate(semana4.getDate() + 6);
+			this.llenarFacturas(response.payload, semana1, semana2, semana3, semana4);
 		});
 
 		this.setState({
