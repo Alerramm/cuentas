@@ -37,8 +37,33 @@ class Cuentas extends Component {
 		}
 	};
 	changeStatus = () => {
+		this.setState({
+			data: [],
+		});
 		const { id, monto, tipo } = this.state;
 
+		consultaClientes().then(response => {
+			const { data } = this.state;
+			const clientes = response.payload;
+			clientes.map((item, index) => {
+				data.push({
+					key: 'C' + index,
+					cliente: item.nombre,
+					numeroDeFacturasPorPagar: 0,
+					montoTotalDeFacturas: 0,
+					montoTotalPorPagar: 0,
+					semana1: '',
+					semana2: '',
+					diasCredito: item.diasCredito,
+					facturas: [],
+				});
+				return item;
+			});
+
+			this.setState({
+				data,
+			});
+		});
 		actualizaEstatus({ id, monto, tipoPago: tipo }).then(response => {
 			const semana1 = new Date(Date.now());
 			const day = semana1.getDay();
@@ -174,9 +199,7 @@ class Cuentas extends Component {
 		}
 		return false;
 	};
-	actulizarFActura = response => {
-		console.log(response);
-	};
+
 	llenarFacturas = (response, semanaUno, semanaDos, semanaTres, semanaCuatro) => {
 		const semana1 = new Date(
 			Date.UTC(semanaUno.getFullYear(), semanaUno.getMonth(), semanaUno.getDate(), 6, 0, 0)
@@ -219,6 +242,7 @@ class Cuentas extends Component {
 
 					element.numeroDeFacturasPorPagar = element.numeroDeFacturasPorPagar + 1;
 
+					console.log(fecha);
 					const fechaComparar = new Date(
 						Date.UTC(fecha.getFullYear(), fecha.getMonth(), fecha.getDate(), 6, 0, 0)
 					);
