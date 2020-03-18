@@ -12,16 +12,57 @@ class Cuentas extends Component {
 		monto: 0,
 		tipo: '',
 		btnAplicar: true,
+		idKey: '',
+	};
+	searchData = idKey => {
+		const { data } = this.state;
+		let factura;
+		data.map(cliente => {
+			cliente.facturas.map(facturaN => {
+				if (idKey === facturaN.key) {
+					factura = facturaN;
+				}
+				return true;
+			});
+			return true;
+		});
+		return factura;
+	};
+	updateData = (idKey, facturaN) => {
+		const { data } = this.state;
+		data.forEach(cliente => {
+			cliente.facturas.forEach(factura => {
+				if (idKey === factura.key) {
+					console.log(factura);
+					console.log(facturaN);
+					factura.montoPorPagar = facturaN.monto - facturaN.montoPagado;
+					factura.estatus = this.estatus(
+						parseInt(facturaN.montoPagado, 10),
+						parseInt(facturaN.monto, 10),
+						facturaN.id,
+						idKey
+					);
+					cliente.montoTotalPorPagar = cliente.montoTotalPorPagar - facturaN.montoPagado;
+				}
+			});
+		});
+		this.setState({
+			data,
+		});
 	};
 	handleMenuClick = e => {
+		const idKey = e.key.substring(
+			1 + e.key.indexOf('-', e.key.indexOf('-', e.key.indexOf('-') + 1)),
+			e.key.length
+		);
+		const factura = this.searchData(idKey);
+		console.log(this.searchData(idKey));
 		if (e.key.substring(0, 3) === 'pag') {
 			this.setState(
 				{
+					idKey,
 					id: e.key.substring(4, e.key.indexOf('-', e.key.indexOf('-') + 1)),
-					monto: e.key.substring(
-						1 + e.key.indexOf('-', e.key.indexOf('-', e.key.indexOf('-') + 1)),
-						e.key.length
-					),
+					monto: factura.monto,
 					tipo: 'Pagada',
 				},
 				() => {
@@ -30,6 +71,7 @@ class Cuentas extends Component {
 			);
 		} else {
 			this.setState({
+				idKey,
 				id: e.key.substring(4, e.key.indexOf('-', e.key.indexOf('-') + 1)),
 				parcial: true,
 				tipo: 'Parcial',
@@ -37,77 +79,10 @@ class Cuentas extends Component {
 		}
 	};
 	changeStatus = () => {
-		this.setState({
-			data: [],
-		});
-		const { id, monto, tipo } = this.state;
-
-		consultaClientes().then(response => {
-			const { data } = this.state;
-			const clientes = response.payload;
-			clientes.map((item, index) => {
-				data.push({
-					key: 'C' + index,
-					cliente: item.nombre,
-					numeroDeFacturasPorPagar: 0,
-					montoTotalDeFacturas: 0,
-					montoTotalPorPagar: 0,
-					semana1: '',
-					semana2: '',
-					diasCredito: item.diasCredito,
-					facturas: [],
-				});
-				return item;
-			});
-
-			this.setState({
-				data,
-			});
-		});
+		const { id, monto, tipo, idKey } = this.state;
 		actualizaEstatus({ id, monto, tipoPago: tipo }).then(response => {
-			const semana1 = new Date(Date.now());
-			const day = semana1.getDay();
-			let suma;
-			switch (day) {
-				case 0:
-					suma = 5;
-					semana1.setDate(semana1.getDate() - 7);
-					break;
-				case 1:
-					suma = 4;
-					semana1.setDate(semana1.getDate() - 7);
-					break;
-				case 2:
-					suma = 3;
-					semana1.setDate(semana1.getDate() - 7);
-					break;
-				case 3:
-					suma = 2;
-					semana1.setDate(semana1.getDate() - 7);
-					break;
-				case 4:
-					suma = 1;
-					semana1.setDate(semana1.getDate() - 7);
-					break;
-				case 5:
-					suma = 0;
-					break;
-				case 6:
-					suma = -1;
-					break;
-				default:
-					suma = 0;
-			}
-			semana1.setDate(semana1.getDate() + suma);
-			const semana2 = new Date(semana1);
-			semana2.setDate(semana2.getDate() + 6);
-			const semana3 = new Date(semana2);
-			semana3.setDate(semana3.getDate() + 1);
-			const semana4 = new Date(semana3);
-			semana4.setDate(semana4.getDate() + 6);
-			this.llenarFacturas(response.payload, semana1, semana2, semana3, semana4);
+			this.updateData(idKey, response.payload.payload[idKey.substring(1, idKey.length)]);
 		});
-
 		this.setState({
 			parcial: false,
 			id: 0,
@@ -115,7 +90,7 @@ class Cuentas extends Component {
 			tipo: '',
 		});
 	};
-	menu = (id, monto, montoPagado) => {
+	menu = (id, monto, montoPagado, idKey) => {
 		let estado = false,
 			parcial = false;
 		if (montoPagado === monto) {
@@ -126,10 +101,10 @@ class Cuentas extends Component {
 		}
 		return (
 			<Menu onClick={this.handleMenuClick}>
-				<Menu.Item disabled={estado || parcial} key={`par-${id}-${monto}`}>
+				<Menu.Item disabled={estado || parcial} key={`par-${id}-${idKey}`}>
 					Parcial
 				</Menu.Item>
-				<Menu.Item disabled={estado} key={`pag-${id}-${monto}`}>
+				<Menu.Item disabled={estado} key={`pag-${id}-${idKey}`}>
 					Pagada
 				</Menu.Item>
 			</Menu>
@@ -173,7 +148,7 @@ class Cuentas extends Component {
 		const facturas = data.filter(element => element.cliente === record.cliente);
 		return <Table columns={columns} dataSource={facturas[0].facturas} pagination={false} />;
 	};
-	estatus = (montoPagar, monto, id) => {
+	estatus = (montoPagar, monto, id, idKey) => {
 		let frase = 'Parcial',
 			badge = 'warning';
 		if (montoPagar >= monto) {
@@ -185,7 +160,7 @@ class Cuentas extends Component {
 			badge = 'error';
 		}
 		return (
-			<Dropdown overlay={this.menu(id, monto, montoPagar)}>
+			<Dropdown overlay={this.menu(id, monto, montoPagar, idKey)}>
 				<div>
 					{frase} <Badge status={badge} />
 				</div>
@@ -242,7 +217,6 @@ class Cuentas extends Component {
 
 					element.numeroDeFacturasPorPagar = element.numeroDeFacturasPorPagar + 1;
 
-					console.log(fecha);
 					const fechaComparar = new Date(
 						Date.UTC(fecha.getFullYear(), fecha.getMonth(), fecha.getDate(), 6, 0, 0)
 					);
@@ -258,7 +232,7 @@ class Cuentas extends Component {
 						cliente: item.cliente,
 						viaje: item.viaje,
 						monto: item.monto,
-						montoPorPagar: item.monto - item.montoPagado,
+						montoPorPagar: Math.round((item.monto - item.montoPagado) * 100) / 100,
 						factura: item.factura,
 						fecha:
 							item.fecFacturacion.substring(8, 10) +
@@ -275,7 +249,8 @@ class Cuentas extends Component {
 						estatus: this.estatus(
 							parseInt(item.montoPagado, 10),
 							parseInt(item.monto, 10),
-							item.id
+							item.id,
+							'F' + index
 						),
 					});
 				}
