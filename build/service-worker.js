@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/Alerramm/cuentas.git/precache-manifest.d7d6ac117eebad15ac0554690b47d377.js"
+  "/Alerramm/cuentas.git/precache-manifest.100ffbc6b3408a2ef819524bea88dfe8.js"
 );
 
 self.addEventListener('message', (event) => {
