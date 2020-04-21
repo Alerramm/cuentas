@@ -4,7 +4,7 @@
 			"name": "cuentas",
 			"cwd": "./src/",
 			"script": "npm",
-			"args": "run production"
+			"args": "run start"
 		}
 	]
 }
